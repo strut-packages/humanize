@@ -20,10 +20,10 @@ strut add /path/to/humanize
 include <humanize>;
 
 function main() -> int {
-    print(humanize_integer(1234567));             // 1,234,567
-    print(humanize_bytes(1572864));               // 1.5 MiB
-    print(humanize_plural(3, "file", "files")); // 3 files
-    print(humanize_ordinal(21));                   // 21st
+    print(humanize.number(1234567));             // 1,234,567
+    print(humanize.bytes(1572864));              // 1.5 MiB
+    print(humanize.plural(3, "file", "files")); // 3 files
+    print(humanize.ordinal(21));                  // 21st
     return 0;
 }
 ```

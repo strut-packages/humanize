@@ -1,7 +1,7 @@
 {
   "name": "humanize",
   "version": "0.1.0",
-  "entry": "humanize.h",
+  "entry": "src/humanize.h",
   "description": "English integer and byte-size formatting for Strut.",
   "license": "MIT",
   "repository": "https://github.com/strut-packages/humanize",

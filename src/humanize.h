@@ -12,7 +12,7 @@ function humanize_internal_decimal(int_64 value) -> string {
     return result;
 }
 
-function humanize_integer(int_64 value) -> string {
+function humanize_internal_integer(int_64 value) -> string {
     if (value == 0) {
         return "0";
     }
@@ -54,7 +54,7 @@ function humanize_internal_tenths(int_64 remainder, int_64 divisor) -> int_64 {
     return 0;
 }
 
-function humanize_bytes(int_64 value) -> string {
+function humanize_internal_bytes(int_64 value) -> string {
     bool negative := value < 0;
     if (negative) {
         value = -value;
@@ -84,14 +84,14 @@ function humanize_bytes(int_64 value) -> string {
     return result + " " + units[unit];
 }
 
-function humanize_plural(int_64 count, string singular, string plural) -> string {
+function humanize_internal_plural(int_64 count, string singular, string plural) -> string {
     if (count == 1 || count == -1) {
-        return humanize_integer(count) + " " + singular;
+        return humanize_internal_integer(count) + " " + singular;
     }
-    return humanize_integer(count) + " " + plural;
+    return humanize_internal_integer(count) + " " + plural;
 }
 
-function humanize_ordinal(int_64 value) -> string {
+function humanize_internal_ordinal(int_64 value) -> string {
     int_64 absolute := value;
     if (absolute < 0) {
         absolute = -absolute;
@@ -108,5 +108,23 @@ function humanize_ordinal(int_64 value) -> string {
             suffix = "rd";
         }
     }
-    return humanize_integer(value) + suffix;
+    return humanize_internal_integer(value) + suffix;
 }
+
+struct HumanizeFacade {
+    function number(int_64 value) -> string;
+    function bytes(int_64 value) -> string;
+    function plural(int_64 count, string singular, string plural) -> string;
+    function ordinal(int_64 value) -> string;
+}
+
+function HumanizeFacade::number(int_64 value) -> string { return humanize_internal_integer(value); }
+function HumanizeFacade::bytes(int_64 value) -> string { return humanize_internal_bytes(value); }
+function HumanizeFacade::plural(int_64 count, string singular, string plural) -> string {
+    return humanize_internal_plural(count, singular, plural);
+}
+function HumanizeFacade::ordinal(int_64 value) -> string { return humanize_internal_ordinal(value); }
+
+function humanize_internal_facade() -> HumanizeFacade { return HumanizeFacade {}; }
+
+HumanizeFacade humanize := humanize_internal_facade();
